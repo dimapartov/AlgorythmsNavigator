@@ -1,12 +1,13 @@
+import java.util.Iterator;
 import java.util.LinkedList;
 
-public class HashTable<T> {
+public class HashTable<T> implements Iterable<Node<T>> {
 
     private static final int INITIAL_CAPACITY = 16;
     private static final double LOAD_FACTOR = 0.75d;
     private int elementsCount;
     private int tableCapacity;
-    private LinkedList<T>[] slots;
+    private LinkedList<Node<T>>[] slots;
 
     public HashTable() {
         this.tableCapacity = INITIAL_CAPACITY;
@@ -17,24 +18,24 @@ public class HashTable<T> {
     }
 
     public double getLoadFactor() {
-        return (double) this.size() / tableCapacity;
+        return (double) this.getSize() / tableCapacity;
     }
 
     private void growIfNeeded() {
-        if ((double) (this.size() + 1) / this.capacity() > LOAD_FACTOR) {
+        if ((double) (this.getSize() + 1) / this.getCapacity() > LOAD_FACTOR) {
             this.grow();
         }
     }
 
     private void grow() {
         int newCapacity = this.tableCapacity * 2;
-        LinkedList<T>[] newSlots = new LinkedList[newCapacity];
+        LinkedList<Node<T>>[] newSlots = new LinkedList[newCapacity];
         for (int i = 0; i < newCapacity; i++) {
             newSlots[i] = new LinkedList<>();
         }
-        for (LinkedList<T> bucket : slots) {
-            for (T entry : bucket) {
-                int slot = Math.abs(entry.hashCode() % newCapacity);
+        for (LinkedList<Node<T>> bucket : slots) {
+            for (Node<T> entry : bucket) {
+                int slot = Math.abs(entry.getKey().hashCode() % newCapacity);
                 newSlots[slot].add(entry);
             }
         }
@@ -42,29 +43,109 @@ public class HashTable<T> {
         this.tableCapacity = newCapacity;
     }
 
-    public void put(T entry) {
-        growIfNeeded();
-        int slot = Math.abs(entry.hashCode() % tableCapacity);
-        slots[slot].add(entry);
-        elementsCount++;
-    }
-
-    public int size() {
+    public int getSize() {
         return this.elementsCount;
     }
 
-    public int capacity() {
+    public int getCapacity() {
         return this.tableCapacity;
     }
 
     public int countCollisions() {
-        int collisions = 0;
-        for (LinkedList<T> bucket : slots) {
+        int collisionCount = 0;
+        for (LinkedList<Node<T>> bucket : slots) {
             if (bucket.size() > 1) {
-                collisions++;
+                collisionCount += bucket.size() - 1;
             }
         }
-        return collisions;
+        return collisionCount;
     }
 
+    public void put(String key, T value) {
+        growIfNeeded();
+        int slot = findSlotNumber(key);
+        LinkedList<Node<T>> bucket = slots[slot];
+        for (Node<T> entry : bucket) {
+            if (entry.getKey().equals(key)) {
+                entry.setValue(value);
+                return;
+            }
+        }
+        bucket.add(new Node<>(key, value));
+        elementsCount++;
+    }
+
+    private int findSlotNumber(String key) {
+        return Math.abs(key.hashCode()) % this.slots.length;
+    }
+
+    public T getValue(String key) {
+        int slot = findSlotNumber(key);
+        LinkedList<Node<T>> bucket = slots[slot];
+
+        for (Node<T> entry : bucket) {
+            if (entry.getKey().equals(key)) {
+                return entry.getValue();
+            }
+        }
+
+        return null;
+    }
+
+    public Node<T> findNode(String key) {
+        int slot = findSlotNumber(key);
+        LinkedList<Node<T>> bucket = slots[slot];
+
+        for (Node<T> entry : bucket) {
+            if (entry.getKey().equals(key)) {
+                return entry;
+            }
+        }
+        return null;
+    }
+
+    public boolean remove(String key) {
+        int slot = findSlotNumber(key);
+        LinkedList<Node<T>> bucket = slots[slot];
+
+        Iterator<Node<T>> iterator = bucket.iterator();
+        while (iterator.hasNext()) {
+            Node<T> entry = iterator.next();
+            if (entry.getKey().equals(key)) {
+                iterator.remove();
+                elementsCount--;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Iterable<String> keys() {
+        LinkedList<String> keys = new LinkedList<>();
+        for (LinkedList<Node<T>> bucket : slots) {
+            for (Node<T> entry : bucket) {
+                keys.add(entry.getKey());
+            }
+        }
+        return keys;
+    }
+
+    public Iterable<T> values() {
+        LinkedList<T> values = new LinkedList<>();
+        for (LinkedList<Node<T>> bucket : slots) {
+            for (Node<T> entry : bucket) {
+                values.add(entry.getValue());
+            }
+        }
+        return values;
+    }
+
+    @Override
+    public Iterator<Node<T>> iterator() {
+        LinkedList<Node<T>> allEntries = new LinkedList<>();
+        for (LinkedList<Node<T>> bucket : slots) {
+            allEntries.addAll(bucket);
+        }
+        return allEntries.iterator();
+    }
 }
