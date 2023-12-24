@@ -6,27 +6,34 @@ public class HashTable<T> {
     private static final double LOAD_FACTOR = 0.75d;
     private int elementsCount;
     private int tableCapacity;
+    private LinkedList<T>[] slots;
 
     public HashTable() {
+        this.tableCapacity = INITIAL_CAPACITY;
+        this.slots = new LinkedList[tableCapacity];
+        for (int i = 0; i < tableCapacity; i++) {
+            slots[i] = new LinkedList<>();
+        }
     }
 
     public double getLoadFactor() {
-        return (double) this.elementsCount / tableCapacity;
+        return (double) this.size() / tableCapacity;
     }
 
     private void growIfNeeded() {
-        if ((double) (this.elementsCount + 1) / this.tableCapacity > LOAD_FACTOR) {
+        if ((double) (this.size() + 1) / this.capacity() > LOAD_FACTOR) {
             this.grow();
         }
     }
+
     private void grow() {
         int newCapacity = this.tableCapacity * 2;
         LinkedList<T>[] newSlots = new LinkedList[newCapacity];
         for (int i = 0; i < newCapacity; i++) {
             newSlots[i] = new LinkedList<>();
         }
-        for (bucket : slots) {
-            for ( entry : bucket) {
+        for (LinkedList<T> bucket : slots) {
+            for (T entry : bucket) {
                 int slot = Math.abs(entry.hashCode() % newCapacity);
                 newSlots[slot].add(entry);
             }
@@ -35,8 +42,29 @@ public class HashTable<T> {
         this.tableCapacity = newCapacity;
     }
 
-    public void put() {
+    public void put(T entry) {
         growIfNeeded();
+        int slot = Math.abs(entry.hashCode() % tableCapacity);
+        slots[slot].add(entry);
+        elementsCount++;
+    }
+
+    public int size() {
+        return this.elementsCount;
+    }
+
+    public int capacity() {
+        return this.tableCapacity;
+    }
+
+    public int countCollisions() {
+        int collisions = 0;
+        for (LinkedList<T> bucket : slots) {
+            if (bucket.size() > 1) {
+                collisions++;
+            }
+        }
+        return collisions;
     }
 
 }
