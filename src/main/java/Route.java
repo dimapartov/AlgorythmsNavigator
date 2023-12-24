@@ -49,6 +49,7 @@ public class Route {
         this.locationPoints = locationPoints;
     }
 
+//    TODO remake equals
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -56,8 +57,20 @@ public class Route {
         return Objects.equals(id, route.id) && Objects.equals(distance, route.distance) && Objects.equals(popularity, route.popularity) && Objects.equals(isFavourite, route.isFavourite) && Objects.equals(locationPoints, route.locationPoints);
     }
 
+//    TODO remake hashCode
     @Override
     public int hashCode() {
-        return Objects.hash(id, distance, popularity, isFavourite, locationPoints);
+        return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Route{" +
+                "id='" + id + '\'' +
+                ", distance=" + distance +
+                ", popularity=" + popularity +
+                ", isFavourite=" + isFavourite +
+                ", locationPoints=" + locationPoints +
+                '}';
     }
 }
