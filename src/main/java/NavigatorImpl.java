@@ -59,9 +59,14 @@ public class NavigatorImpl implements Navigator {
     }
 
     @Override
-    public Iterable<Route> getFavoriteRoutes(String destinationPoint) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getFavoriteRoutes'");
+    public Iterable<Route> getFavoriteRoutes(String endPoint) {
+        Collection<Route> routeCollection = (Collection<Route>) routes.values();
+        return routeCollection.stream()
+            .filter(route -> route.getFavourite() && !route.getLocationPoints().get(0).equals(endPoint) && route.getLocationPoints().get(route.getLocationPoints().size() - 1).equals(endPoint))
+            .sorted(Comparator.comparing(Route::getDistance).reversed()
+                .thenComparing(Route::getPopularity, Comparator.reverseOrder()))
+            .distinct()
+            .collect(Collectors.toList());
     }
 
     @Override
