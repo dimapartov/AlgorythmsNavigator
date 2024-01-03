@@ -1,45 +1,51 @@
 public class NavigatorImpl implements Navigator {
 
+    private HashTable<Route> routes;
+
+    public NavigatorImpl() {
+        routes = new HashTable<>();
+    }
+
     @Override
     public void addRoute(Route route) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addRoute'");
+        routes.put(route.getId(), route);
     }
 
     @Override
     public void removeRoute(String routeId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'removeRoute'");
+        Route route = routes.getValue(routeId);
+        if (route != null) {
+            routes.remove(routeId);
+        }
     }
 
     @Override
     public boolean contains(Route route) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'contains'");
+        return routes.findNode(route.getId()) != null;
     }
 
     @Override
     public int size() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'size'");
+        return routes.getSize();
     }
 
     @Override
     public Route getRoute(String routeId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getRoute'");
+        return routes.getValue(routeId);
     }
 
     @Override
     public void chooseRoute(String routeId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'chooseRoute'");
+        Route route = routes.getValue(routeId);
+        if (route != null) {
+            route.setPopularity(route.getPopularity() + 1);
+        }
     }
 
     @Override
     public Iterable<Route> searchRoutes(String startPoint, String endPoint) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'searchRoutes'");
+//        todo
+        throw new UnsupportedOperationException("Unsdasdasd");
     }
 
     @Override

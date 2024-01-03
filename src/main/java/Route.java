@@ -9,10 +9,10 @@ public class Route {
     private Boolean isFavourite;
     private List<String> locationPoints;
 
-    public Route(String id, Double distance, Integer popularity, Boolean isFavourite, List<String> locationPoints) {
+    public Route(String id, Double distance, Boolean isFavourite, List<String> locationPoints) {
         this.id = id;
         this.distance = distance;
-        this.popularity = popularity;
+        this.popularity = 0;
         this.isFavourite = isFavourite;
         this.locationPoints = locationPoints;
     }
@@ -49,15 +49,17 @@ public class Route {
         this.locationPoints = locationPoints;
     }
 
-//    TODO remake equals
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Route route)) return false;
-        return Objects.equals(id, route.id) && Objects.equals(distance, route.distance) && Objects.equals(popularity, route.popularity) && Objects.equals(isFavourite, route.isFavourite) && Objects.equals(locationPoints, route.locationPoints);
+        if (o == null || getClass() != o.getClass()) return false;
+        Route route = (Route) o;
+        return Objects.equals(distance, route.distance) &&
+                Objects.equals(locationPoints, route.locationPoints);
     }
 
-//    TODO remake hashCode
+
+    //    TODO remake hashCode
     @Override
     public int hashCode() {
         return Objects.hash(id);
