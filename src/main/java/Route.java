@@ -59,11 +59,9 @@ public class Route {
                Objects.equals(getLocationPoints().get(getLocationPoints().size() - 1), route.getLocationPoints().get(route.getLocationPoints().size() - 1));
     }
 
-
-    //    TODO remake hashCode
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(getLocationPoints().get(0), getLocationPoints().get(getLocationPoints().size() - 1), getDistance());
     }
 
     @Override

@@ -49,7 +49,7 @@ public class NavigatorImpl implements Navigator {
     public Iterable<Route> searchRoutes(String startPoint, String endPoint) {
         Collection<Route> routeCollection = (Collection<Route>) routes.values();
         return routeCollection.stream()
-            .filter(route -> route.getLocationPoints().get(0).equals(startPoint) && route.getLocationPoints().get(route.getLocationPoints().size()-1).equals(endPoint))
+            .filter(route -> route.getLocationPoints().get(0).equals(startPoint) && route.getLocationPoints().get(route.getLocationPoints().size() - 1).equals(endPoint))
             .sorted(Comparator.comparing(Route::getFavourite)
                 .reversed()
                 .thenComparing(Route::getDistance)
