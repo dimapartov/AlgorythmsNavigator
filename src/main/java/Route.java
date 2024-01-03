@@ -54,8 +54,9 @@ public class Route {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Route route = (Route) o;
-        return Objects.equals(distance, route.distance) &&
-                Objects.equals(locationPoints, route.locationPoints);
+        return Double.compare(route.getDistance(), getDistance()) == 0 &&
+               Objects.equals(getLocationPoints().get(0), route.getLocationPoints().get(0)) &&
+               Objects.equals(getLocationPoints().get(getLocationPoints().size() - 1), route.getLocationPoints().get(route.getLocationPoints().size() - 1));
     }
 
 

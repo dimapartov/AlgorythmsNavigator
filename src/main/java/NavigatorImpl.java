@@ -54,6 +54,7 @@ public class NavigatorImpl implements Navigator {
                 .reversed()
                 .thenComparing(Route::getDistance)
                 .thenComparing(Route::getPopularity, Comparator.reverseOrder()))
+            .distinct() // Добавьте эту строку для удаления дубликатов
             .collect(Collectors.toList());
     }
 
