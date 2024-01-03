@@ -69,10 +69,7 @@ public class NavigatorImpl implements Navigator {
     public Iterable<Route> getTop3Routes() {
         Collection<Route> routeCollection = (Collection<Route>) routes.values();
         return routeCollection.stream()
-            .sorted(Comparator.comparing(Route::getPopularity).reversed()
-                .thenComparing(Route::getDistance)
-                .thenComparing(route -> route.getLocationPoints().size()))
-            .limit(3)
-            .collect(Collectors.toList());
+            .sorted(Comparator.comparing(Route::getPopularity).reversed().thenComparing(Route::getDistance).thenComparing(route -> route.getLocationPoints().size()))
+            .limit(3).distinct().collect(Collectors.toList());
     }
 }
