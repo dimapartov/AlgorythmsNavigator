@@ -49,12 +49,12 @@ public class NavigatorImpl implements Navigator {
     public Iterable<Route> searchRoutes(String startPoint, String endPoint) {
         Collection<Route> routeCollection = (Collection<Route>) routes.values();
         return routeCollection.stream()
-            .filter(route -> route.getLocationPoints().contains(startPoint) && route.getLocationPoints().contains(endPoint))
+            .filter(route -> route.getLocationPoints().get(0).equals(startPoint) && route.getLocationPoints().get(route.getLocationPoints().size()-1).equals(endPoint))
             .sorted(Comparator.comparing(Route::getFavourite)
                 .reversed()
                 .thenComparing(Route::getDistance)
                 .thenComparing(Route::getPopularity, Comparator.reverseOrder()))
-            .distinct() // Добавьте эту строку для удаления дубликатов
+            .distinct()
             .collect(Collectors.toList());
     }
 
