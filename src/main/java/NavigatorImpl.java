@@ -71,7 +71,12 @@ public class NavigatorImpl implements Navigator {
 
     @Override
     public Iterable<Route> getTop3Routes() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getTop3Routes'");
+        Collection<Route> routeCollection = (Collection<Route>) routes.values();
+        return routeCollection.stream()
+            .sorted(Comparator.comparing(Route::getPopularity).reversed()
+                .thenComparing(Route::getDistance)
+                .thenComparing(route -> route.getLocationPoints().size()))
+            .limit(3)
+            .collect(Collectors.toList());
     }
 }
