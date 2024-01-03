@@ -1,3 +1,6 @@
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.stream.Collectors;
 public class NavigatorImpl implements Navigator {
 
     private HashTable<Route> routes;
@@ -44,8 +47,14 @@ public class NavigatorImpl implements Navigator {
 
     @Override
     public Iterable<Route> searchRoutes(String startPoint, String endPoint) {
-//        todo
-        throw new UnsupportedOperationException("Unsdasdasd");
+        Collection<Route> routeCollection = (Collection<Route>) routes.values();
+        return routeCollection.stream()
+            .filter(route -> route.getLocationPoints().contains(startPoint) && route.getLocationPoints().contains(endPoint))
+            .sorted(Comparator.comparing(Route::getFavourite)
+                .reversed()
+                .thenComparing(Route::getDistance)
+                .thenComparing(Route::getPopularity, Comparator.reverseOrder()))
+            .collect(Collectors.toList());
     }
 
     @Override
