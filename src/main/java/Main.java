@@ -22,13 +22,14 @@ public class Main {
             navigator.addRoute(route);
         }
 
-        Route route21 = new Route("Route21", (double) (100 / 3), false, Arrays.asList("Point1","Point232","Point3"));
-        Route route22 = new Route("Route22", (double) (100 / 3), true, Arrays.asList("Point1","Point2131231","Point3"));
-        Route route23 = new Route("Route23", (double) (100 / 3), false, Arrays.asList("Point1","Point4345","Point3"));
-        Route route24 = new Route("Route24", (double) (100 / 3), false, Arrays.asList("Point1","Point346346","Point3"));
-        Route route25 = new Route("Route25", (double) (100 / 3), true, Arrays.asList("Point1","Point4656","Point3"));
-        Route route26 = new Route("Route26", (double) (100 / 3), false, Arrays.asList("Point1","Point0","Point3"));
-        Route route27 = new Route("Route27", (double) (100 / 3), false, Arrays.asList("Point1","Point13","Point3"));
+        Route route21 = new Route("Route21", (double) (10 * 3), false, Arrays.asList("Point1","Point232","Point3"));
+        Route route22 = new Route("Route22", (double) (10 * 3), true, Arrays.asList("Point1","Point2131231","Point3"));
+        Route route23 = new Route("Route23", (double) (10 * 3), false, Arrays.asList("Point1","Point4345","Point3"));
+        Route route24 = new Route("Route24", (double) (10 * 3), false, Arrays.asList("Point1","Point346346","Point3"));
+        Route route25 = new Route("Route25", (double) (10 * 3), true, Arrays.asList("Point1","Point4656","Point3"));
+        Route route26 = new Route("Route26", (double) (10 * 3), false, Arrays.asList("Point1","Point0","Point3"));
+        Route route27 = new Route("Route27", (double) (10 * 3), false, Arrays.asList("Point1","Point13","Point3"));
+        Route route28 = new Route("Route28", (double) (10 * 4), false, Arrays.asList("Point1","Point13", "Point23", "Point3"));
 
         navigator.addRoute(route21);
         navigator.addRoute(route22);
@@ -37,6 +38,7 @@ public class Main {
         navigator.addRoute(route25);
         navigator.addRoute(route26);
         navigator.addRoute(route27);
+        navigator.addRoute(route28);
 
         /*System.out.println("contains Route21: " + navigator.contains(route21));
 
@@ -55,7 +57,7 @@ public class Main {
 //        System.out.println("navigator size: " + navigator.size());
 
         Iterable<Route> findRoutes = navigator.searchRoutes("Point1", "Point3");
-        System.out.println("0-3 routes: ");
+        System.out.println("Point1 - Point3 routes:");
         for (Route route : findRoutes) {
             System.out.println(route);
         }
