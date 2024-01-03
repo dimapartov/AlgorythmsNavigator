@@ -50,10 +50,7 @@ public class NavigatorImpl implements Navigator {
         Collection<Route> routeCollection = (Collection<Route>) routes.values();
         return routeCollection.stream()
             .filter(route -> route.getLocationPoints().get(0).equals(startPoint) && route.getLocationPoints().get(route.getLocationPoints().size() - 1).equals(endPoint))
-            .sorted(Comparator.comparing(Route::getFavourite)
-                .reversed()
-                .thenComparing(Route::getDistance)
-                .thenComparing(Route::getPopularity, Comparator.reverseOrder()))
+            .sorted(Comparator.comparing(Route::getFavourite).reversed().thenComparing(Route::getDistance).thenComparing(Route::getPopularity, Comparator.reverseOrder()))
             .distinct()
             .collect(Collectors.toList());
     }
@@ -63,8 +60,7 @@ public class NavigatorImpl implements Navigator {
         Collection<Route> routeCollection = (Collection<Route>) routes.values();
         return routeCollection.stream()
             .filter(route -> route.getFavourite() && !route.getLocationPoints().get(0).equals(endPoint) && route.getLocationPoints().get(route.getLocationPoints().size() - 1).equals(endPoint))
-            .sorted(Comparator.comparing(Route::getDistance).reversed()
-                .thenComparing(Route::getPopularity, Comparator.reverseOrder()))
+            .sorted(Comparator.comparing(Route::getDistance).thenComparing(Route::getPopularity, Comparator.reverseOrder()))
             .distinct()
             .collect(Collectors.toList());
     }
